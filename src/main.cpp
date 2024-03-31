@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include "cases/communicationRing.hpp"
+#include "cases/communicationRingV2.hpp"
 #include "cases/blockingCommunicationRing.hpp"
 #include "cases/miniRaceCondition.hpp"
 
@@ -18,9 +19,10 @@ int main(int argc, char* argv[]) {
             programId = std::stoi(argv[++i]);
         } else if (arg == "-p") {
             std::cout  << "Programs:\n"
-                << "  1    CommunicationRing - non-blocking\n"
-                << "  2    CommunicationRing - blocking\n"
-                << "  3    RaceCondition\n"            
+                << "  1    CommunicationRing - non-blocking with MPI_Waitall\n"
+                << "  2    CommunicationRing - non-blocking with MPI_Wait\n"
+                << "  3    CommunicationRing - blocking\n"
+                << "  4    RaceCondition\n"            
                 << std::endl;
             MPI_Finalize();
             return 0;
@@ -43,10 +45,13 @@ int main(int argc, char* argv[]) {
     case 1:
         CommunicationRing::run(1);
         break;
-    case 2: 
+    case 2:
+        CommunicationRingV2::run(1);
+        break;       
+    case 3: 
         BlockingCommunicationRing::run(1);
         break;
-    case 3:
+    case 4:
         MiniRaceCondition::run(1);
         break;
     // Add more cases here for additional programs
