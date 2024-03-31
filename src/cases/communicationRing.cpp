@@ -24,7 +24,7 @@ void CommunicationRing::run(int iter){
         MPI_Status status[2];   
 
         int dest = (rank+1) % world_size;
-        int source = (unsigned int)(rank-1) % world_size;
+        int source = (rank + world_size - 1) % world_size;
         int rank_ = rank;
         int count = 0;
         int result;
@@ -35,15 +35,14 @@ void CommunicationRing::run(int iter){
         usleep(500000);
         MPI_Irecv(&result, 1, MPI_INT, source, 0, MPI_COMM_WORLD, &requests[1]);
 
-        //usleep(500000);
+        usleep(500000);
         MPI_Waitall(2, requests, status);
 
         count = result+count;
+        char buffer[100];
+        printRow(std::vector<int>{rank, dest, status[0].MPI_ERROR, source, status[0].MPI_ERROR});
         
         usleep(500000);
         MPI_Barrier(MPI_COMM_WORLD);
-
-        char buffer[100];
-        printRow(std::vector<int>{rank, dest, status[0].MPI_ERROR, source, status[0].MPI_ERROR});
     }
 }

@@ -20,7 +20,7 @@ void BlockingCommunicationRing::run(int iter){
       
     for (int i=0; i < iter; i++){
         int dest = (rank+1) % world_size;
-        int source = (unsigned int)(rank-1) % world_size;
+        int source = (rank + world_size - 1) % world_size;
         int rank_ = rank;
         int count = 0;
         int result;
